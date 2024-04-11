@@ -12,8 +12,10 @@ const User = require('./models/user');
 const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
-// cloud storage:
+// cloud storage/ connect to MongoDB database:
 require('./config/database');
+//configure passport middleware
+require('./config/passport');
 
 // requiring routes
 const usersRouter = require('./routes/users');
