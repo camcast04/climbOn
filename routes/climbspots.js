@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Climbspot = require('../models/climbspot');
-const Review = require('../models/review');
+const climbspot = require('../models/climbspot');
+// const Review = require('../models/review');
 
 router.get('/', async (req, res) => {
   // find all the climbspots (grab them)
-  const climbspots = await climbspots.find({});
+  const climbspots = await climbspot.find({});
   // passing it through to template and render them
   res.render('climbspots/index', { climbspots });
 });
@@ -27,7 +28,7 @@ router.post('/', async (req, res) => {
 // showing climbspot
 router.get('/:id', async (req, res) => {
   //finding the climbspot by id
-  const climbspot = await Climbspot.findById(req.params.id);
+  const climbspot = await Climbspot.findById(req.params.id).populate('reviews');
   res.render('climbspots/show', { climbspot });
 });
 
@@ -55,3 +56,5 @@ router.delete('/:id', async (req, res) => {
   await Climbspot.findByIdAndDelete(id);
   res.redirect('/climbspots');
 });
+
+module.exports = router;

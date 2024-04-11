@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const passport = require('passport');
+// const passport = require('passport');
 
-const UserSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
+const userSchema = new Schema(
+  {
+    name: String,
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
-UserSchema.plugin(passport);
+// userSchema.plugin(passport());
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);

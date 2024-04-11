@@ -1,24 +1,23 @@
-const createError = require('http-errors');
 const express = require('express');
+const createError = require('http-errors');
 const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const mongoose = require('mongoose');
-const Climbspot = require('./models/climbspot');
-const climbspot = require('./models/climbspot');
+const engine = require('ejs-mate');
+const session = require('express-session');
+const methodOverride = require('method-override');
+const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const engine = require('ejs-mate');
+const cookieParser = require('cookie-parser');
 
 // requiring routes
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const climbspots = require('./routes/climbspots');
 const reviews = require('./routes/reviews');
 
-const app = express();
-const methodOverride = require('method-override');
+// load the secrets in the .env file
+require('dotenv').config;
 
 //middleware
 // to be able to do put/patch delete requests
@@ -34,14 +33,26 @@ db.once('open', () => {
   console.log('Database connected');
 });
 
+// cloud storage:
+require('./config/database');
+
+const app = express();
+
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.engine('ejs', engine);
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+//parse the form info
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
+app.use(cookieParser());
 
 // middleware
-app.use(methodOverride('_method'));
 const sessionConfig = {
-  secret: 'thissecretsucks',
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   // this way dont stay signed forever their log in expires in one week
@@ -51,17 +62,15 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
-app.use(session());
-app.use(logger('dev'));
+app.use(session(sessionConfig));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-// use routers
+// use routers (handlers)
 app.use('/climbspots', climbspots);
 app.use('/climbspots/:id/reviews', reviews);
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
