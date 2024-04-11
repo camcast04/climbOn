@@ -11,11 +11,18 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const engine = require('ejs-mate');
 
+// requiring routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const climbspots = require('./routes/climbspots');
+const reviews = require('./routes/reviews');
 
+const app = express();
 const methodOverride = require('method-override');
 
+//middleware
+// to be able to do put/patch delete requests
+//npm i method-override
 mongoose.connect('mongodb://localhost:27017/climb-on', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -27,98 +34,39 @@ db.once('open', () => {
   console.log('Database connected');
 });
 
-const app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // middleware
 app.use(methodOverride('_method'));
+const sessionConfig = {
+  secret: 'thissecretsucks',
+  resave: false,
+  saveUninitialized: true,
+  // this way dont stay signed forever their log in expires in one week
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+app.use(session());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// use routers
+app.use('/climbspots', climbspots);
+app.use('/climbspots/:id/reviews', reviews);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
-});
-
-//climbspot index
-app.get('/climbspots', async (req, res) => {
-  // find all the climbspots (grab them)
-  const climbspots = await climbspots.find({});
-  // passing it through to template and render them
-  res.render('climbspots/index', { climbspots });
-});
-
-// form to create new climbspots
-app.get('/climbspots/new', (req, res) => {
-  res.render('climbspots/new'); // rendering a form
-});
-
-//payload from form (req.body)
-app.post('/climbspots', async (req, res) => {
-  //creating a new climbspot
-  const climbspot = new Climbspot(req.body.climbspot);
-  //saving
-  await climbspot.save();
-  res.redirect(`/climbspots/${climbspot._id}`);
-});
-
-// showing climbspot
-app.get('/climbspots/:id', async (req, res) => {
-  //finding the climbspot by id
-  const climbspot = await Climbspot.findById(req.params.id);
-  res.render('climbspots/show', { climbspot });
-});
-
-//route that serves the form
-// we need to look up the thing we are editing so we can pre-populate the form
-app.get('/climbspots/:id/edit', async (req, res) => {
-  // we need to look up a climbspot by that id
-  const climbspot = await Climbspot.findById(req.params.id);
-  // and then pass it to climbspots/edit
-  res.render('climbspots/edit', { climbspot });
-});
-
-//update
-app.put('/climbspots/:id', async (req, res) => {
-  const { id } = req.params;
-  const climbspot = await Climbspot.findByIdAndUpdate(id, {
-    ...req.body.climbspot,
-  });
-  res.redirect(`/climbspots/${climbspot._id}`);
-});
-
-//delete
-app.delete('/climbspots/:id', async (req, res) => {
-  const { id } = req.params;
-  await Climbspot.findByIdAndDelete(id);
-  res.redirect('/climbspots');
-});
-
-app.post('/climbspots/:id/reviews', async (req, res) => {
-  const climbspot = await Climbspot.findById(req.params.id);
-  const review = new Review(req.body.review);
-  climbspot.reviews.push(review);
-  await review.save();
-  await climbspot.save();
-  res.redirect(`/climbspots/${climbspot._id}`);
-});
-
-//delete reviews
-//$pull operator removes from an existing array all instances of a value or values that match a specified condition
-app.delete('/climbspots/:id/reviews/:reviewId', async (req, res) => {
-  const { id, reviewId } = req.params;
-  await Climbspot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(reviewId);
-  res.redirect(`/climbspots/${id}`);
 });
 
 //*********************
