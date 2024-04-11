@@ -84,6 +84,22 @@ app.get('/climbspots/:id/edit', async (req, res) => {
   res.render('climbspots/edit', { climbspot });
 });
 
+//update
+app.put('/climbspots/:id', async (req, res) => {
+  const { id } = req.params;
+  const climbspot = await Climbspot.findByIdAndUpdate(id, {
+    ...req.body.climbspot,
+  });
+  res.redirect(`/climbspots/${climbspot._id}`);
+});
+
+//delete
+app.delete('/climbspots/:id', async (req, res) => {
+  const { id } = req.params;
+  await Climbspot.findByIdAndDelete(id);
+  res.redirect('/climbspots');
+});
+
 //*********************
 //*********************
 // error handler
