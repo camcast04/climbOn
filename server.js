@@ -11,30 +11,30 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const cookieParser = require('cookie-parser');
 
+require('dotenv').config();
+// cloud storage:
+require('./config/database');
+
 // requiring routes
 const usersRouter = require('./routes/users');
 const climbspots = require('./routes/climbspots');
 const reviews = require('./routes/reviews');
 
 // load the secrets in the .env file
-require('dotenv').config;
 
 //middleware
 // to be able to do put/patch delete requests
 //npm i method-override
-mongoose.connect('mongodb://localhost:27017/climb-on', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect('mongodb://localhost:27017/climb-on', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
   console.log('Database connected');
 });
-
-// cloud storage:
-require('./config/database');
 
 const app = express();
 
