@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Climbspot = require('../models/climbspot');
 const Review = require('../models/review');
 
-router.post('/climbspots/:id/reviews', async (req, res) => {
+router.post('/', async (req, res) => {
   const climbspot = await Climbspot.findById(req.params.id);
   const review = new Review(req.body.review);
   climbspot.reviews.push(review);
