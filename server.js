@@ -1,14 +1,17 @@
-var createError = require('http-errors');
+const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const mongoose = require('mongoose');
 const Climbspot = require('./models/climbspot');
 const climbspot = require('./models/climbspot');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
 const methodOverride = require('method-override');
 
@@ -65,6 +68,24 @@ app.post('/climbspots', async (req, res) => {
   res.redirect(`/climbspots/${climbspot._id}`);
 });
 
+// showing climbspot
+app.get('/climbspots/:id', async (req, res) => {
+  //finding the climbspot by id
+  const climbspot = await Climbspot.findById(req.params.id);
+  res.render('climbspots/show', { climbspot });
+});
+
+//route that serves the form
+// we need to look up the thing we are editing so we can pre-populate the form
+app.get('/climbspots/:id/edit', async (req, res) => {
+  // we need to look up a climbspot by that id
+  const climbspot = await Climbspot.findById(req.params.id);
+  // and then pass it to climbspots/edit
+  res.render('climbspots/edit', { climbspot });
+});
+
+//*********************
+//*********************
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
