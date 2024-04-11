@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>
+<h1>All Climbspots</h1>
+<div>
+  <a href="/climbspots/new">Add Climbspots</a>
+</div>
+<%for(let climbspot of climbspots){%>
+<div class="card" mb-3>
+  <div class="row">
+    <div class="col-md-4">
+      <img class="img-fluid" alt="" src="<%= climbspot.image %>" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= climbspot.title %></h5>
+        <p class="card-text"><%= climbspot.description%></p>
+        <p class="card-text">
+          <small class="text-dark-emphasis"><%= climbspot.location%></small>
+        </p>
+        <a href="/climbspots/<%=climbspot._id%>" class="btn btn-primary"
+          >View <%= climbspot.title%>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<%}%>

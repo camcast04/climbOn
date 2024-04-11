@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate')%>
+<div class="row">
+  <h1 class="text-center">New Climbspots</h1>
+  <div class="col-6 offset-3">
+    <form action="/climbspots" method="POST">
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="climbspot[title]"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="climbspot[location]"
+        />
+        <!--Here (climbspot[property]) we are grouping things under climbspot so if I have multiple climbspot
+             (title, location) when data is sent via post request to our express app to the server, 
+             everything in the request.body will be stored under climbspot (it will group content together)-->
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="image">Image URL</label>
+        <input
+          class="form-control"
+          type="text"
+          id="image"
+          name="climbspot[image]"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="difficulty">Climbspot difficulty</label>
+        <div class="input-group">
+          <span class="input-group-text" id="difficulty-label">🧗🏻</span>
+          <input
+            type="text"
+            class="form-control"
+            id="difficulty"
+            placeholder="0.00"
+            aria-label="difficulty"
+            aria-describedby="difficulty-label"
+            name="climbspot[difficulty]"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="description"
+          name="climbspot[description]"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <button class="btn btn-success">Add Climbspot</button>
+      </div>
+    </form>
+    <a href="/climbspots">All Climbspots</a>
+  </div>
+</div>

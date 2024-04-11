@@ -1,0 +1,70 @@
+<% layout('layouts/boilerplate')%>
+<div class="row">
+  <h1 class="text-center">Edit Climbspot</h1>
+  <div class="col-6 offset-3">
+    <form action="/climbspots/<%=climbspot._id%>?_method=PUT" method="POST">
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="climbspot[title]"
+          value="<%=campground.title %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="climbspot[location]"
+          value="<%=climbspot.location %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="image">Image Url</label>
+        <input
+          class="form-control"
+          type="text"
+          id="image"
+          name="climbspot[image]"
+          value="<%=climbspot.image %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="difficulty">Climbspot difficulty</label>
+        <div class="input-group">
+          <span class="input-group-text" id="difficulty-label">🧗🏻</span>
+          <input
+            type="text"
+            class="form-control"
+            id="difficulty"
+            placeholder="0.00"
+            aria-label="difficulty"
+            aria-describedby="difficulty-label"
+            name="climbspot[difficulty]"
+            value="<%=climbspot.difficulty %>"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="description"
+          name="climbspot[description]"
+        >
+<%= climbspot.description%></textarea
+        >
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-success">Update Climbspot</button>
+      </div>
+    </form>
+    <a href="/climbspots/<%= climbspot._id%>">Back To Climbspot</a>
+  </div>
+</div>
