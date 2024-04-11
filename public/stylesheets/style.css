@@ -1,8 +1,25 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.navbar-nav .nav-link img {
+  height: 20px; /* Adjust the height as needed */
+  width: auto; /* Maintains the aspect ratio */
 }
 
-a {
-  color: #00B7FF;
+/* body {
+  padding: 50px;
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+} */
+
+/* a {
+  color: #00b7ff;
+} */
+/* 
+.login {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 34px;
+  margin-left: auto;
 }
+
+.login img {
+  height: 20px;
+} */
