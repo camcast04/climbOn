@@ -2,7 +2,9 @@
 
 A RESTful web-app that helps you find your next climb.
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/wcnkS9f" data-context="false" ><a href="//imgur.com/a/wcnkS9f"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+![image of the game]https://imgur.com/eChkQVw
+![image of the game]https://imgur.com/BDVRYIX
+![image of the game]https://imgur.com/wYDVjWa
 
 ---
 
