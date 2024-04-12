@@ -1,8 +1,10 @@
 //controllers/climbspots
 
 const Climbspot = require('../models/climbspot');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const { cloudinary } = require('../config/cloudinary');
-// const climbspot = require('../models/climbspot');
 
 module.exports.index = async (req, res) => {
   // find all the climbspots (grab them)
@@ -15,9 +17,16 @@ module.exports.renderNewForm = (req, res) => {
   res.render('climbspots/new'); // rendering a form
 };
 
-module.exports.createClimbSpot = async (req, res) => {
+module.exports.createClimbSpot = async (req, res, next) => {
+  const geoData = await geocoder
+    .forwardGeocode({
+      query: req.body.climbspot.location,
+      limit: 1,
+    })
+    .send();
   //creating a new climbspot
   const climbspot = new Climbspot(req.body.climbspot);
+  climbspot.geometry = geoData.body.features[0].geometry;
   climbspot.images = req.files.map((file) => ({
     url: file.path,
     filename: file.filename,
@@ -62,25 +71,39 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateClimbspot = async (req, res) => {
   const { id } = req.params;
-  const climbspot = await Climbspot.findByIdAndUpdate(id, {
-    ...req.body.climbspot,
-  });
-  const images = req.files.map((file) => ({
-    url: file.path,
-    filename: file.filename,
-  }));
-  climbspot.images.push(...images);
-  await climbspot.save();
-  if (req.body.deleteImages) {
-    for (let filename of req.body.deleteImages) {
-      await cloudinary.uploader.destroy(filename);
+  try {
+    const climbspot = await Climbspot.findByIdAndUpdate(
+      id,
+      req.body.climbspot,
+      { new: true }
+    );
+
+    // Handle new image uploads
+    if (req.files && req.files.length > 0) {
+      const images = req.files.map((file) => ({
+        url: file.path,
+        filename: file.filename,
+      }));
+      climbspot.images.push(...images);
+      await climbspot.save();
     }
-    await climbspot.updateOne({
-      $pull: { images: { filename: { $in: req.body.deleteImages } } },
-    });
+
+    // Handle image deletions
+    if (req.body.deleteImages && req.body.deleteImages.length > 0) {
+      for (let filename of req.body.deleteImages) {
+        await cloudinary.uploader.destroy(filename);
+        await climbspot.updateOne({
+          $pull: { images: { filename: { $in: req.body.deleteImages } } },
+        });
+      }
+    }
+
+    req.flash('success', 'Successfully updated a climbing spot!');
+    res.redirect(`/climbspots/${climbspot._id}`);
+  } catch (error) {
+    req.flash('error', 'Failed to update climbing spot!');
+    res.redirect(`/climbspots/${id}/edit`);
   }
-  req.flash('success', 'Successfully updated a climbing spot!');
-  res.redirect(`/climbspots/${climbspot._id}`);
 };
 
 module.exports.deleteClimbspot = async (req, res) => {
