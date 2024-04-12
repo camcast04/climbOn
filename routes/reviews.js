@@ -1,24 +1,13 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const Climbspot = require('../models/climbspot');
 const Review = require('../models/review');
+const reviews = require('../controllers/reviews');
+const Climbspot = require('../models/climbspot');
 
-router.post('/', async (req, res) => {
-  const climbspot = await Climbspot.findById(req.params.id);
-  const review = new Review(req.body.review);
-  climbspot.reviews.push(review);
-  await review.save();
-  await climbspot.save();
-  res.redirect(`/climbspots/${climbspot._id}`);
-});
+router.post('/', reviews.createReview);
 
 //delete reviews
 //$pull operator removes from an existing array all instances of a value or values that match a specified condition
-router.delete('/:reviewId', async (req, res) => {
-  const { id, reviewId } = req.params;
-  await Climbspot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(reviewId);
-  res.redirect(`/climbspots/${id}`);
-});
+router.delete('/:reviewId', reviews.deleteReview);
 
 module.exports = router;
