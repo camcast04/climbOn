@@ -43,7 +43,9 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted"><%= climbspot.location%></li>
-        <li class="list-group-item">$<%= climbspot.difficulty%></li>
+        <li class="list-group-item">
+          🧗‍♀️ rating (YDS) <%= climbspot.difficulty%>
+        </li>
       </ul>
       <div class="card-body">
         <a
@@ -138,7 +140,7 @@
 
 <script>
   const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-  const climbspot = '<%-climbspot %>';
+  const climbspot = <%- JSON.stringify(climbspot) %>
 </script>
 
 <script src="/javascripts/showMap.js"></script>

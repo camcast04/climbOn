@@ -17,13 +17,14 @@ const LocalStrategy = require('passport-local');
 const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 
+const app = express();
+
 // Import routers from other parts of the app
 const indexRouter = require('./routes/index');
 const userRouters = require('./routes/users');
 const climbspotRouters = require('./routes/climbspots');
 const reviewRouters = require('./routes/reviews');
 
-const app = express();
 // Load environment variables from .env file
 require('dotenv').config();
 
@@ -39,7 +40,6 @@ require('./config/passport');
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
 // Middleware to parse request bodies and cookies, handle static files, and log requests
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded bodies (form submissions)
 app.use(cookieParser()); // Parses cookies attached to the client request object
@@ -87,6 +87,10 @@ app.use('/', indexRouter); // Handles root and Google OAuth routes
 app.use('/', userRouters); // Handles routes related to user actions
 app.use('/climbspots', climbspotRouters); // Handles routes for climbing spots
 app.use('/climbspots/:id/reviews', reviewRouters); // Handles routes for reviews of climbing spots
+
+app.get('/', (req, res) => {
+  res.render('home');
+});
 
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404));
