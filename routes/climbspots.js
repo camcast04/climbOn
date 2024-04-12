@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const climbspots = require('../controllers/climbspots');
 const Climbspot = require('../models/climbspot');
-const climbspot = require('../models/climbspot');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-const { isLoggedIn, isAuthor, validateClimbspot } = require('../middleware');
+const {
+  isLoggedIn,
+  isAuthor,
+  validateClimbspot,
+} = require('../config/middleware/middleware');
 // const Review = require('../models/review');
 
 router.get('/', wrapAsync(climbspots.index));

@@ -5,21 +5,20 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const createError = require('http-errors');
 const path = require('path');
-const mongoose = require('mongoose');
 const engine = require('ejs-mate');
-const Joi = require('joi');
 const ExpressError = require('./helpers/ExpressErrors');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const logger = require('morgan');
 const passport = require('passport');
+const LocalStrategy = require('passport-local');
 const cookieParser = require('cookie-parser');
 
 // Import routers from other parts of the app
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const climbspots = require('./routes/climbspots');
-const reviews = require('./routes/reviews');
+const userRouters = require('./routes/users');
+const climbspotRouters = require('./routes/climbspots');
+const reviewRouters = require('./routes/reviews');
 
 // Load environment variables from .env file
 require('dotenv').config();
@@ -61,6 +60,7 @@ app.use(session(sessionConfig));
 // Initialize passport and session for persistent login sessions
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
 // Middleware to make the user object available for all views
 app.use(function (req, res, next) {
@@ -70,9 +70,9 @@ app.use(function (req, res, next) {
 
 // Route handling for different parts of the site
 app.use('/', indexRouter); // Handles general and homepage routes
-app.use('/users', usersRouter); // Handles routes related to user actions
-app.use('/climbspots', climbspots); // Handles routes for climbing spots
-app.use('/climbspots/:id/reviews', reviews); // Handles routes for reviews of climbing spots
+app.use('/users', userRouters); // Handles routes related to user actions
+app.use('/climbspots', climbspotRouters); // Handles routes for climbing spots
+app.use('/climbspots/:id/reviews', reviewRouters); // Handles routes for reviews of climbing spots
 
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404));

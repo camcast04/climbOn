@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema(
   {
     name: String,
-    googleId: {
+    googleId: { type: String, index: true, unique: false, sparse: true },
+    email: {
       type: String,
       required: true,
+      unique: true,
     },
-    email: String,
     avatar: String,
   },
   {
@@ -17,6 +18,21 @@ const userSchema = new Schema(
   }
 );
 
-// userSchema.plugin(passport());
+// const userSchema = new Schema(
+//   {
+//     name: String,
+//     googleId: {
+//       type: String,
+//       required: true,
+//     },
+//     email: String,
+//     avatar: String,
+//   },
+//   {
+//     timestamps: true,
+//   }
+// );
+
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 module.exports = mongoose.model('User', userSchema);
