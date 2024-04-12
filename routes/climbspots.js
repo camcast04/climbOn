@@ -21,7 +21,6 @@ router.get('/new', isLoggedIn, climbspots.renderNewForm);
 //payload from form (req.body)
 router.post(
   '/',
-  upload.array('image'),
   isLoggedIn,
   upload.array('image'),
   validateClimbspot,

@@ -13,6 +13,7 @@ const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const cookieParser = require('cookie-parser');
+const User = require('./models/user');
 
 // Import routers from other parts of the app
 const indexRouter = require('./routes/index');
