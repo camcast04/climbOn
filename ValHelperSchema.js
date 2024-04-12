@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const { number } = require('joi');
 
-module.exports.ClimbspotSchema = Joi.object({
+module.exports.climbspotSchema = Joi.object({
   climbspot: Joi.object({
     title: Joi.string().required(),
     difficulty: Joi.number().required().min(0),

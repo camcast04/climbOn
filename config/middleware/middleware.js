@@ -1,5 +1,5 @@
-const { climbspotSchema, reviewSchema } = require('./schemas.js');
-const ExpressError = require('./utils/ExpressError');
+const { climbspotSchema, reviewSchema } = require('../../ValHelperSchema.js');
+const ExpressError = require('../../helpers/ExpressErrors.js');
 const Climbspot = require('../../models/climbspot.js');
 const Review = require('../../models/review.js');
 

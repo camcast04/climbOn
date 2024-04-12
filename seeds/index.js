@@ -32,7 +32,7 @@ const seedDB = async () => {
     const climb = new Climbspot({
       location: `${cities[random1000].city}, ${cities[random1000].state}`, // get a city
       title: `${sample(descriptors)} ${sample(places)}`, // gives the place a name
-      image: 'https://source.unsplash.com/collection/483251',
+      image: [{}],
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum magnam sed cumque recusandae quisquam temporibus corporis unde, minima tenetur est ducimus modi eos quos consectetur, beatae exercitationem quia libero quas.',
       difficulty,
