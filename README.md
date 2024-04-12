@@ -8,20 +8,6 @@ A RESTful web-app that helps you find your next climb.
 
 ---
 
-## Technology used:
-
-- Node.js
-- MongoDB
-- Mongoose
-- JavaScript
-- Mapbox
-- Bootstrap
-- Express
-- HTML
-- CSS
-
----
-
 ## Stretch Goals:
 
 [✅] Has at least 2 data entities (data resources) in addition to the User Model
@@ -44,3 +30,19 @@ A RESTful web-app that helps you find your next climb.
 ## Nice to have:
 
 [✅] Consume a third-party API.
+
+---
+
+## Technology used:
+
+- Node.js
+- MongoDB
+- Mongoose
+- JavaScript
+- Mapbox
+- Bootstrap
+- Express
+- HTML
+- CSS
+
+[Try it out here!](https://calm-temple-19962-9d64ff789119.herokuapp.com/)
