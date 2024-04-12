@@ -5,27 +5,44 @@ const Climbspot = require('../models/climbspot');
 const climbspot = require('../models/climbspot');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
+const { isLoggedIn, isAuthor, validateClimbspot } = require('../middleware');
 // const Review = require('../models/review');
 
-router.get('/', climbspots.index);
+router.get('/', wrapAsync(climbspots.index));
 
 // form to create new climbspots
-router.get('/new', climbspots.renderNewForm);
+router.get('/new', isLoggedIn, climbspots.renderNewForm);
 
 //payload from form (req.body)
-router.post('/', upload.array('image'), climbspots.createClimbSpot);
+router.post(
+  '/',
+  upload.array('image'),
+  isLoggedIn,
+  validateClimbspot,
+  climbspots.createClimbSpot
+);
 
 // showing climbspot
-router.get('/:id', climbspots.showClimbspot);
+router.get('/:id', wrapAsync(climbspots.showClimbspot));
 
 //route that serves the form
 // we need to look up the thing we are editing so we can pre-populate the form
-router.get('/:id/edit', climbspots.renderEditForm);
+router.get(
+  '/:id/edit',
+  isLoggedIn,
+  isAuthor,
+  wrapAsync(climbspots.renderEditForm)
+);
 
 //update
-router.put('/:id', climbspots.updateClimbspot);
+router.put('/:id', wrapAsync(climbspots.updateClimbspot));
 
 //delete
-router.delete('/:id', climbspots.deleteClimbspot);
+router.delete(
+  '/:id',
+  isLoggedIn,
+  isAuthor,
+  wrapAsync(climbspots.deleteClimbspot)
+);
 
 module.exports = router;

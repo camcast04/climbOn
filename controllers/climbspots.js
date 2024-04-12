@@ -15,6 +15,7 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createClimbSpot = async (req, res) => {
   //creating a new climbspot
   const climbspot = new Climbspot(req.body.climbspot);
+  climbspot.author = req.user._id;
   //saving
   await climbspot.save();
   res.redirect(`/climbspots/${climbspot._id}`);
@@ -22,14 +23,22 @@ module.exports.createClimbSpot = async (req, res) => {
 
 module.exports.showClimbspot = async (req, res) => {
   //finding the climbspot by id
-  const climbspot = await Climbspot.findById(req.params.id).populate('reviews');
+  const climbspot = await Climbspot.findById(req.params.id)
+    .populate({
+      path: 'reviews',
+      populate: {
+        path: 'author',
+      },
+    })
+    .populate('author');
   // res.render('climbspots/show', { climbspot });
   res.render('climbspots/show', { title: climbspot.title, climbspot });
 };
 
 module.exports.renderEditForm = async (req, res) => {
+  const { id } = req.params;
   // we need to look up a climbspot by that id
-  const climbspot = await Climbspot.findById(req.params.id);
+  const climbspot = await Climbspot.findById(id);
   // and then pass it to climbspots/edit
   // res.render('climbspots/edit', { climbspot });
   res.render('climbspots/edit', { title: 'Edit Climbspot', climbspot });

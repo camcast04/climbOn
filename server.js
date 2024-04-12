@@ -7,7 +7,8 @@ const createError = require('http-errors');
 const path = require('path');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
-const wrapAsync = require('./helpers/wrapAsync');
+const Joi = require('joi');
+const ExpressError = require('./helpers/ExpressErrors');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const logger = require('morgan');
@@ -73,6 +74,10 @@ app.use('/users', usersRouter); // Handles routes related to user actions
 app.use('/climbspots', climbspots); // Handles routes for climbing spots
 app.use('/climbspots/:id/reviews', reviews); // Handles routes for reviews of climbing spots
 
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found', 404));
+});
+
 // Catch 404 errors and forward them to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -80,10 +85,13 @@ app.use(function (req, res, next) {
 
 // General error handler
 app.use(function (err, req, res, next) {
+  const { statusCode = 500 } = err;
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {}; // Only provide error details in development
+  if (!err.message) err.message = 'Something is not right!';
   res.status(err.status || 500);
-  res.render('error'); // Render a custom error page
+  // Render a custom error page
+  res.status(statusCode).render('error', { err });
 });
 
 // Export the app to be used elsewhere in our application
