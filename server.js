@@ -5,16 +5,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 // Load all necessary modules from npm and node
 const express = require('express');
-const createError = require('http-errors');
 const path = require('path');
 const engine = require('ejs-mate');
-const ExpressError = require('./helpers/ExpressErrors');
 const session = require('express-session');
+const flash = require('connect-flash');
+const ExpressError = require('./helpers/ExpressErrors');
 const methodOverride = require('method-override');
 const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 
@@ -24,6 +23,7 @@ const userRouters = require('./routes/users');
 const climbspotRouters = require('./routes/climbspots');
 const reviewRouters = require('./routes/reviews');
 
+const app = express();
 // Load environment variables from .env file
 require('dotenv').config();
 
@@ -34,7 +34,6 @@ require('./config/database');
 require('./config/passport');
 
 // Initialize express app
-const app = express();
 
 // Setup EJS as the view engine with 'ejs-mate' for layouts support
 app.engine('ejs', engine);

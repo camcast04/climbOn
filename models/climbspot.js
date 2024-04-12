@@ -10,23 +10,12 @@ const ImageSchema = new Schema({
 });
 
 ImageSchema.virtual('thumbnail').get(function () {
-  return this.url.replace('/upload', '/upload/w_300');
+  return this.url.replace('/upload', '/upload/w_200');
 });
 
 const ClimbspotSchema = new Schema({
   title: String,
   images: [ImageSchema],
-  geometry: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true,
-    },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
   difficulty: Number,
   description: String,
   location: String,

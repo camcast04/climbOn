@@ -4,10 +4,11 @@ const express = require('express');
 const router = express.Router();
 const climbspots = require('../controllers/climbspots');
 const wrapAsync = require('../helpers/wrapAsync');
-const Climbspot = require('../models/climbspot');
 const multer = require('multer');
 const { storage } = require('../config/cloudinary');
 const upload = multer({ storage });
+const Climbspot = require('../models/climbspot');
+
 const {
   isLoggedIn,
   isAuthor,
