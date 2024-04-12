@@ -2,7 +2,13 @@
 <div class="row">
   <h1 class="text-center">New Climbspots</h1>
   <div class="col-6 offset-3">
-    <form action="/climbspots" method="POST">
+    <form
+      action="/climbspots"
+      method="POST"
+      novalidate
+      class="validated-form"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -10,7 +16,9 @@
           type="text"
           id="title"
           name="climbspot[title]"
+          required
         />
+        <div class="valid-feedback">Looks Good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
@@ -19,20 +27,23 @@
           type="text"
           id="title"
           name="climbspot[location]"
+          required
         />
+        <div class="valid-feedback">Asi es!</div>
         <!--Here (climbspot[property]) we are grouping things under climbspot so if I have multiple climbspot
              (title, location) when data is sent via post request to our express app to the server, 
              everything in the request.body will be stored under climbspot (it will group content together)-->
       </div>
-      <div class="mb-3">
+      <input type="file" name="image" multiple />
+      <!-- <div class="mb-3">
         <label class="form-label" for="image">Image URL</label>
         <input
           class="form-control"
           type="text"
           id="image"
-          name="climbspot[image]"
+          name="climbspot[image]" required
         />
-      </div>
+      </div> -->
       <div class="mb-3">
         <label class="form-label" for="difficulty">Climbspot difficulty</label>
         <div class="input-group">
@@ -45,7 +56,9 @@
             aria-label="difficulty"
             aria-describedby="difficulty-label"
             name="climbspot[difficulty]"
+            required
           />
+          <div class="valid-feedback">Bravissimo!</div>
         </div>
       </div>
       <div class="mb-3">
@@ -55,7 +68,9 @@
           type="text"
           id="description"
           name="climbspot[description]"
+          required
         ></textarea>
+        <div class="valid-feedback">Isso!</div>
       </div>
 
       <div class="mb-3">

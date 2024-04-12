@@ -3,6 +3,8 @@ const router = express.Router();
 const climbspots = require('../controllers/climbspots');
 const Climbspot = require('../models/climbspot');
 const climbspot = require('../models/climbspot');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 // const Review = require('../models/review');
 
 router.get('/', climbspots.index);
@@ -11,7 +13,7 @@ router.get('/', climbspots.index);
 router.get('/new', climbspots.renderNewForm);
 
 //payload from form (req.body)
-router.post('/', climbspots.createClimbSpot);
+router.post('/', upload.array('image'), climbspots.createClimbSpot);
 
 // showing climbspot
 router.get('/:id', climbspots.showClimbspot);

@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 // Load all necessary modules from npm and node
 const express = require('express');
 const createError = require('http-errors');
