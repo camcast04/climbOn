@@ -1,11 +1,12 @@
 //controllers/climbspots
 
 const Climbspot = require('../models/climbspot');
+const { cloudinary } = require('../config/cloudinary');
 // const climbspot = require('../models/climbspot');
 
 module.exports.index = async (req, res) => {
   // find all the climbspots (grab them)
-  const climbspots = await climbspot.find({});
+  const climbspots = await Climbspot.find({});
   // passing it through to template and render them
   res.render('climbspots/index', { climbspots });
 };
