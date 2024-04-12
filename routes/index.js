@@ -37,4 +37,4 @@ router.get('/logout', function (req, res) {
   });
 });
 
-modeule.exports = router;
+module.exports = router;
