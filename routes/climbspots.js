@@ -3,7 +3,8 @@ const router = express.Router();
 const climbspots = require('../controllers/climbspots');
 const Climbspot = require('../models/climbspot');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const { storage } = require('../config/cloudinary');
+const upload = multer({ storage });
 const {
   isLoggedIn,
   isAuthor,
@@ -21,6 +22,7 @@ router.post(
   '/',
   upload.array('image'),
   isLoggedIn,
+  upload.array('image'),
   validateClimbspot,
   climbspots.createClimbSpot
 );

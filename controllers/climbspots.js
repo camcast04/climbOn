@@ -15,6 +15,10 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createClimbSpot = async (req, res) => {
   //creating a new climbspot
   const climbspot = new Climbspot(req.body.climbspot);
+  climbspot.images = req.files.map((file) => ({
+    url: file.path,
+    filename: file.filename,
+  }));
   climbspot.author = req.user._id;
   //saving
   await climbspot.save();

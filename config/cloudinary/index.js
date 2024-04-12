@@ -9,8 +9,10 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  folder: 'ClimbOn',
-  allowedFormats: ['jpeg', 'png', 'jpg'],
+  params: {
+    folder: 'ClimbOn',
+    allowedFormats: ['jpeg', 'png', 'jpg'],
+  },
 });
 
 module.exports = {
