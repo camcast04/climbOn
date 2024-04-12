@@ -7,6 +7,7 @@ const createError = require('http-errors');
 const path = require('path');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
+const wrapAsync = require('./helpers/wrapAsync');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const logger = require('morgan');
