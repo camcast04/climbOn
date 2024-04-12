@@ -1,7 +1,13 @@
 .navbar-nav .nav-link img {
-  height: 25px; /* Adjust the height as needed */
-  width: auto; /* Maintains the aspect ratio */
+  height: 25px; 
+  width: auto; 
 }
+
+.carabiner img {
+  height: 20px;
+} 
+
+
 
 /* body {
   padding: 50px;
@@ -20,6 +26,3 @@
   margin-left: auto;
 }
 
-.login img {
-  height: 20px;
-} */

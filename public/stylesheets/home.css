@@ -1,0 +1,24 @@
+body {
+  background-image: url('https://27crags.s3.amazonaws.com/photos/000/341/341401/size_xl-8f62ae79320e6024b1fd5ff67c27faa5.jpg');
+  background-size: cover; /* Cover the entire page */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-attachment: fixed; /* Optional: keeps the background image fixed during scrolling */
+}
+.bg-transparent {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.nav-link {
+  color: #fff; /* Ensuring links are white */
+}
+
+body {
+  background-color: #333;
+}
+
+.btn.pink-button {
+  background-color: #a33496;
+  color: white;
+  border: none;
+}

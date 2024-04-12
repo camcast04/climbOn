@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-router.get('/', (req, res, next) => {
-  res.redirect('/climbspots');
+router.get('/home', (req, res, next) => {
+  res.redirect('/');
 });
 
 // Google OAuth login route
