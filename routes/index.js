@@ -26,14 +26,14 @@ router.get(
   '/oauth2callback',
   passport.authenticate('google', {
     successRedirect: '/climbspots',
-    failureRedirect: '/home', // landing page
+    failureRedirect: '/', // landing page
   })
 );
 
 // OAuth logout route
 router.get('/logout', function (req, res) {
   req.logout(function () {
-    res.redirect('/home');
+    res.redirect('/');
   });
 });
 

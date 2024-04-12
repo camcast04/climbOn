@@ -29,7 +29,8 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   //finding the climbspot by id
   const climbspot = await Climbspot.findById(req.params.id).populate('reviews');
-  res.render('climbspots/show', { climbspot });
+  // res.render('climbspots/show', { climbspot });
+  res.render('climbspots/show', { title: climbspot.title, climbspot });
 });
 
 //route that serves the form
@@ -38,7 +39,8 @@ router.get('/:id/edit', async (req, res) => {
   // we need to look up a climbspot by that id
   const climbspot = await Climbspot.findById(req.params.id);
   // and then pass it to climbspots/edit
-  res.render('climbspots/edit', { climbspot });
+  // res.render('climbspots/edit', { climbspot });
+  res.render('climbspots/edit', { title: 'Edit Climbspot', climbspot });
 });
 
 //update
