@@ -1,3 +1,5 @@
+//controllers/review.js
+
 const Climbspot = require('../models/climbspot');
 const Review = require('../models/review');
 

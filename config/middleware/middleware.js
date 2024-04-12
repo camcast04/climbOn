@@ -1,3 +1,4 @@
+//config/middleware/middleware.js
 const { climbspotSchema, reviewSchema } = require('../../ValHelperSchema.js');
 const ExpressError = require('../../helpers/ExpressErrors.js');
 const Climbspot = require('../../models/climbspot.js');

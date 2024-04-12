@@ -1,3 +1,5 @@
+//routes/climbspots.js
+
 const express = require('express');
 const router = express.Router();
 const climbspots = require('../controllers/climbspots');
@@ -23,6 +25,13 @@ router.post(
   '/',
   isLoggedIn,
   upload.array('image'),
+  (req, res, next) => {
+    if (!req.files || req.files.length === 0) {
+      req.flash('error', 'Image upload is required!');
+      return res.redirect('/climbspots/new');
+    }
+    next();
+  },
   validateClimbspot,
   climbspots.createClimbSpot
 );

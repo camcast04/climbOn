@@ -1,3 +1,5 @@
+//controllers/climbspots
+
 const Climbspot = require('../models/climbspot');
 const climbspot = require('../models/climbspot');
 

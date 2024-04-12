@@ -1,3 +1,5 @@
+//config/database
+
 //require mongoose module
 const mongoose = require('mongoose');
 

@@ -1,3 +1,5 @@
+//server.js
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -12,6 +14,7 @@ const methodOverride = require('method-override');
 const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 
@@ -44,7 +47,10 @@ app.use(cookieParser()); // Parses cookies attached to the client request object
 app.use(express.static(path.join(__dirname, 'public'))); // Serves static files like images, CSS, and JavaScript
 app.use(logger('dev')); // Logs requests to the console for debugging
 app.use(methodOverride('_method')); // Allows forms to simulate PUT and DELETE methods
-
+app.use((req, res, next) => {
+  console.log('Method:', req.method, 'Path:', req.originalUrl);
+  next();
+});
 // Configure session management with express-session
 const sessionConfig = {
   secret: process.env.SECRET, // Secret used to sign the session ID cookie (keep this secure!)
@@ -57,7 +63,7 @@ const sessionConfig = {
   },
 };
 app.use(session(sessionConfig));
-
+app.use(flash());
 // Initialize passport and session for persistent login sessions
 app.use(passport.initialize());
 app.use(passport.session());
@@ -69,19 +75,22 @@ app.use(function (req, res, next) {
   next(); // Move to next middleware
 });
 
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+});
+
 // Route handling for different parts of the site
-app.use('/', indexRouter); // Handles general and homepage routes
-app.use('/users', userRouters); // Handles routes related to user actions
+
+app.use('/', indexRouter); // Handles root and Google OAuth routes
+app.use('/', userRouters); // Handles routes related to user actions
 app.use('/climbspots', climbspotRouters); // Handles routes for climbing spots
 app.use('/climbspots/:id/reviews', reviewRouters); // Handles routes for reviews of climbing spots
 
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404));
-});
-
-// Catch 404 errors and forward them to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
 });
 
 // General error handler
