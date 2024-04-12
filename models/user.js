@@ -20,20 +20,7 @@ const userSchema = new Schema(
   }
 );
 
-// const userSchema = new Schema(
-//   {
-//     name: String,
-//     googleId: {
-//       type: String,
-//       required: true,
-//     },
-//     email: String,
-//     avatar: String,
-//   },
-//   {
-//     timestamps: true,
-//   }
-// );
+// Apply the Passport-Local Mongoose plugin to handle password hashing and salting
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 

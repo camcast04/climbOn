@@ -1,5 +1,5 @@
 //server.js
-
+// Conditionally load environment variables from .env if not in production
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }

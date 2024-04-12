@@ -1,6 +1,7 @@
-const Joi = require('joi');
+const Joi = require('joi'); // Import Joi module for data validation
 const { number } = require('joi');
 
+// Define a schema for validating 'climbspot' data structures
 module.exports.climbspotSchema = Joi.object({
   climbspot: Joi.object({
     title: Joi.string().required(),
@@ -10,6 +11,7 @@ module.exports.climbspotSchema = Joi.object({
   }).required(),
 });
 
+// Define a schema for validating 'review' data structures
 module.exports.reviewSchema = Joi.object({
   review: Joi.object({
     rating: Joi.number().required().min(1).max(5),

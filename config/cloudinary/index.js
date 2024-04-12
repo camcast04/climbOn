@@ -1,5 +1,4 @@
-//config/cloudinary/index.js
-
+// Import the cloudinary and CloudinaryStorage libraries
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
@@ -9,6 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
+// Define the storage settings using CloudinaryStorage which integrates with multer for file uploads
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -17,6 +17,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
+// Export the configured cloudinary and storage instancess
 module.exports = {
   cloudinary,
   storage,

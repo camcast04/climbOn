@@ -1,11 +1,14 @@
 //controllers/climbspots
 
+// Require the Climbspot model for database interactions
 const Climbspot = require('../models/climbspot');
+// import the Mapbox Geocoding API service
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const { cloudinary } = require('../config/cloudinary');
 
+// Route handler to display all climbing spots
 module.exports.index = async (req, res) => {
   // find all the climbspots (grab them)
   const climbspots = await Climbspot.find({});
@@ -13,10 +16,12 @@ module.exports.index = async (req, res) => {
   res.render('climbspots/index', { climbspots });
 };
 
+// route handler to render the form for creating a new climbing spot
 module.exports.renderNewForm = (req, res) => {
   res.render('climbspots/new'); // rendering a form
 };
 
+// route handler to create a new climbing spot
 module.exports.createClimbSpot = async (req, res, next) => {
   const geoData = await geocoder
     .forwardGeocode({
@@ -38,6 +43,7 @@ module.exports.createClimbSpot = async (req, res, next) => {
   res.redirect(`/climbspots/${climbspot._id}`);
 };
 
+// Route handler to display a specific climbing spot
 module.exports.showClimbspot = async (req, res) => {
   //finding the climbspot by id
   const climbspot = await Climbspot.findById(req.params.id)
@@ -88,7 +94,7 @@ module.exports.updateClimbspot = async (req, res) => {
       await climbspot.save();
     }
 
-    // Handle image deletions
+    // Remove selected images
     if (req.body.deleteImages && req.body.deleteImages.length > 0) {
       for (let filename of req.body.deleteImages) {
         await cloudinary.uploader.destroy(filename);
