@@ -2,9 +2,9 @@
 
 A RESTful web-app that helps you find your next climb.
 
-![image](https://imgur.com/eChkQVw)
-![image](https://imgur.com/BDVRYIX)
-![image](https://imgur.com/wYDVjWa)
+![image of the home screen](https://i.imgur.com/eChkQVw.png)
+![image ](https://i.imgur.com/BDVRYIX.png)
+![image](https://i.imgur.com/wYDVjWa.png)
 
 ---
 
